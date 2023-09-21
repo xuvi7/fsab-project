@@ -10,6 +10,7 @@ const User = require('./models/user.model')
 app.use(cors())
 app.use(express.json())
 
+//TODO: update ip before running
 mongoose.connect(
     'mongodb+srv://dbUser:dbUserPassword@cluster0.icri1r3.mongodb.net/?retryWrites=true&w=majority',
     {
