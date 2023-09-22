@@ -1,9 +1,28 @@
 import { useState } from 'react'
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 
 function App() {
+    const navigate = useNavigate()
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    async function createJournal() {
+
+        const content = 'placeholder'
+        const response = await fetch('http://localhost:5000/api/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email,
+                content, //might need change
+            })
+        })
+
+        const data = await response.json()
+        console.log(data)
+    }
 
     async function loginUser(event) {
         event.preventDefault()
@@ -20,6 +39,13 @@ function App() {
         })
 
         const data = await response.json()
+        if (data.user) {
+            alert('Login Successful')
+            createJournal()
+            navigate('/journal')
+        } else {
+            alert('Login Failed')
+        }
         console.log(data)
     }
 
