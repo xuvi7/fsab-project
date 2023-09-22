@@ -58,11 +58,18 @@ app.post('/api/login', async (req, res) => {
 app.post('/api/create', async (req, res) => {
     console.log(req.body)
     try {
-        const journal = await Journal.create({
-            email: req.body.email,
-            content: req.body.content,
+        const exist = await Journal.findOne({
+            email: req.body.email
         })
-        res.json({ status: 'ok' })
+        if (!exist) {
+            const journal = await Journal.create({
+                email: req.body.email,
+                content: req.body.content,
+            })
+            res.json({ status: 'ok' })
+        } else {
+            res.json({ status: 'error', error: 'email already exists' })
+        }
     } catch (err) {
         console.log(err)
         res.json({ status: 'error', error: 'error' })
